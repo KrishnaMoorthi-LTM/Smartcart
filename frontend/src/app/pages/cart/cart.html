@@ -1,0 +1,92 @@
+<div class="cart-container">
+
+  <h2 class="cart-title">🛒 My Cart</h2>
+
+  <!-- Empty Cart -->
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
+    <p>😕 Your cart is empty!</p>
+    <button class="btn-continue" (click)="continueShopping()">
+      Continue Shopping
+    </button>
+  </div>
+
+  <!-- Cart Content -->
+  <div class="cart-content" *ngIf="cartItems.length > 0">
+
+    <!-- Left - Cart Items -->
+    <div class="cart-items">
+
+      <div class="cart-item" *ngFor="let item of cartItems">
+
+        <!-- Image -->
+        <div class="item-image">
+          <img
+            [src]="item.product.image"
+            [alt]="item.product.name"
+            (error)="onImageError($event)">
+        </div>
+
+        <!-- Info -->
+        <div class="item-info">
+          <h3 class="item-name">{{ item.product.name }}</h3>
+          <p class="item-desc">{{ item.product.description }}</p>
+          <p class="item-price">₹{{ item.product.price | number }}</p>
+        </div>
+
+        <!-- Quantity Controls -->
+        <div class="item-qty">
+          <button class="qty-btn" (click)="decrease(item.product.id!)">−</button>
+          <span class="qty-value">{{ item.quantity }}</span>
+          <button class="qty-btn" (click)="increase(item.product.id!)">+</button>
+        </div>
+
+        <!-- Item Total -->
+        <div class="item-total">
+          ₹{{ item.product.price * item.quantity | number }}
+        </div>
+
+        <!-- Remove -->
+        <button class="remove-btn" (click)="remove(item.product.id!)">
+          🗑️
+        </button>
+
+      </div>
+
+      <!-- Clear Cart -->
+      <div class="cart-actions">
+        <button class="btn-clear" (click)="clearCart()">
+          Clear Cart
+        </button>
+        <button class="btn-continue" (click)="continueShopping()">
+          Continue Shopping
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Right - Price Summary -->
+    <div class="price-summary">
+
+      <h3 class="summary-title">Price Summary</h3>
+
+      <div class="summary-row" *ngFor="let item of cartItems">
+        <span>{{ item.product.name }} x {{ item.quantity }}</span>
+        <span>₹{{ item.product.price * item.quantity | number }}</span>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-total">
+        <span>Total Amount</span>
+        <span>₹{{ getTotalPrice() | number }}</span>
+      </div>
+
+      <button class="btn-checkout" (click)="checkout()">
+        Proceed to Checkout
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

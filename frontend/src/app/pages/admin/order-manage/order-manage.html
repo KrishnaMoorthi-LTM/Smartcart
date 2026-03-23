@@ -1,0 +1,74 @@
+<div class="order-manage-container">
+
+  <!-- Header -->
+  <div class="manage-header">
+    <div class="header-left">
+      <button class="back-btn" (click)="goBack()">← Back</button>
+      <h2>📦 Manage Orders</h2>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading orders...</p>
+  </div>
+
+  <!-- No Orders -->
+  <div *ngIf="!isLoading && orders.length === 0" class="empty-orders">
+    <p>😕 No orders found!</p>
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="!isLoading && orders.length > 0">
+    <div class="order-card" *ngFor="let order of orders">
+
+      <!-- Order Header -->
+      <div class="order-header">
+        <div class="order-info">
+          <span class="order-id">Order #{{ order.id }}</span>
+          <span class="order-date">
+            📅 {{ order.orderDate | date: 'dd MMM yyyy, hh:mm a' }}
+          </span>
+          <span class="order-customer">
+            👤 {{ order.user.username }}
+          </span>
+        </div>
+        <div class="order-right">
+          <span class="order-total">₹{{ order.totalAmount | number }}</span>
+
+          <!-- Status Dropdown -->
+          <select
+            class="status-select"
+            [class.placed]="order.status === 'PLACED'"
+            [class.shipped]="order.status === 'SHIPPED'"
+            [class.delivered]="order.status === 'DELIVERED'"
+            [class.cancelled]="order.status === 'CANCELLED'"
+            [(ngModel)]="order.status"
+            (change)="updateStatus(order.id, order.status)">
+            <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+          </select>
+
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-items">
+        <div class="order-item" *ngFor="let item of order.items">
+          <div class="item-info">
+            <p class="item-name">{{ item.product.name }}</p>
+            <p class="item-qty">Qty: {{ item.quantity }}</p>
+            <p class="item-price">₹{{ item.price | number }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Details -->
+      <div class="delivery-info">
+        <p>📍 {{ order.name }}, {{ order.address }}, {{ order.city }} - {{ order.pincode }}</p>
+        <p>📞 {{ order.phone }}</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>

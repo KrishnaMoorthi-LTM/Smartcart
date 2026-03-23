@@ -1,0 +1,80 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <!-- Left Panel -->
+    <div class="login-left">
+      <h1>🛒 Smartcart</h1>
+      <p>Login to get access to your orders, wishlist and recommendations</p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="login-right">
+
+      <h2>Login</h2>
+        <h2>Login</h2>
+<div class="role-tabs">
+  <button
+    class="role-tab"
+    [class.active]="selectedRole === 'CUSTOMER'"
+    (click)="selectedRole = 'CUSTOMER'">
+    👤 Customer
+  </button>
+  <button
+    class="role-tab"
+    [class.active]="selectedRole === 'STAFF'"
+    (click)="selectedRole = 'STAFF'">
+    🧑‍💼 Staff
+  </button>
+  <button
+    class="role-tab"
+    [class.active]="selectedRole === 'ADMIN'"
+    (click)="selectedRole = 'ADMIN'">
+    👑 Admin
+  </button>
+</div>
+      <!-- Error Message -->
+      <div class="error-msg" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label>Username</label>
+        <input
+          type="text"
+          [(ngModel)]="username"
+          placeholder="Enter your username"
+          class="form-input">
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label>Password</label>
+        <div class="password-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            class="form-input">
+          <span
+            class="toggle-password"
+            (click)="showPassword = !showPassword">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Login Button -->
+      <button
+        class="btn-login"
+        (click)="login()"
+        [disabled]="isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

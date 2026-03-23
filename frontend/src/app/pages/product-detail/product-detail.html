@@ -1,0 +1,72 @@
+<div class="detail-container">
+
+  <!-- Back Button -->
+  <button class="back-btn" (click)="goBack()">
+    ← Back to Products
+  </button>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading product...</p>
+  </div>
+
+  <!-- Product Detail -->
+  <div class="detail-card" *ngIf="!isLoading && product">
+
+    <!-- Left - Image -->
+    <div class="image-section">
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        (error)="onImageError($event)"
+        class="product-image">
+    </div>
+
+    <!-- Right - Info -->
+    <div class="info-section">
+
+      <h1 class="product-name">{{ product.name }}</h1>
+
+      <p class="product-price">₹{{ product.price | number }}</p>
+
+      <p class="product-desc">{{ product.description }}</p>
+
+      <!-- Stock -->
+      <p class="stock" [class.out-of-stock]="product.quantity === 0">
+        {{ product.quantity > 0 ? '✅ In Stock (' + product.quantity + ' available)' : '❌ Out of Stock' }}
+      </p>
+
+      <!-- Quantity Selector -->
+      <div class="quantity-selector" *ngIf="product.quantity > 0">
+        <span>Quantity:</span>
+        <button class="qty-btn" (click)="decreaseQty()">−</button>
+        <span class="qty-value">{{ quantity }}</span>
+        <button class="qty-btn" (click)="increaseQty()">+</button>
+      </div>
+
+      <!-- Added to cart message -->
+      <div class="success-msg" *ngIf="addedToCart">
+        ✅ Added to cart successfully!
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons" *ngIf="product.quantity > 0">
+        <button class="btn-cart" (click)="addToCart()">
+          🛒 Add to Cart
+        </button>
+        <button class="btn-buy" (click)="buyNow()">
+          ⚡ Buy Now
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Product Not Found -->
+  <div *ngIf="!isLoading && !product" class="not-found">
+    <p>😕 Product not found!</p>
+    <button (click)="goBack()">Go Back</button>
+  </div>
+
+</div>

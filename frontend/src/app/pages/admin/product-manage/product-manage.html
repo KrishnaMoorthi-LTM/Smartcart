@@ -1,0 +1,71 @@
+<div class="manage-container">
+
+  <!-- Header -->
+  <div class="manage-header">
+    <div class="header-left">
+      <button class="back-btn" (click)="goBack()">← Back</button>
+      <h2>📋 Manage Products</h2>
+      <span class="low-stock-badge" *ngIf="showLowStock">
+        ⚠️ Showing Low Stock Filter
+      </span>
+    </div>
+    <button class="btn-add" (click)="addProduct()">
+      ➕ Add New Product
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading products...</p>
+  </div>
+
+  <!-- Products Table -->
+  <div class="table-wrapper" *ngIf="!isLoading">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let product of products; trackBy: trackById"
+          [class.low-stock-row]="isLowStock(product.quantity)"
+          [class.highlight]="showLowStock && isLowStock(product.quantity)">
+
+          <td>
+            <img
+              [src]="product.image || 'https://via.placeholder.com/60x60?text=No+Image'"
+              [alt]="product.name"
+              class="product-thumb">
+          </td>
+          <td>{{ product.id }}</td>
+          <td class="product-name">{{ product.name }}</td>
+          <td>₹{{ product.price }}</td>
+          <td>
+            <span class="stock-badge" [class.low]="isLowStock(product.quantity)">
+              {{ product.quantity }}
+              <span *ngIf="isLowStock(product.quantity)"> ⚠️</span>
+            </span>
+          </td>
+          <td class="product-desc">{{ product.description }}</td>
+          <td class="actions">
+            <button class="btn-edit" (click)="editProduct(product)">
+              ✏️ Edit
+            </button>
+            <button class="btn-delete"  *ngIf="isAdmin()" (click)="deleteProduct(product)">
+              🗑️ Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

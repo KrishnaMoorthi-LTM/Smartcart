@@ -1,0 +1,50 @@
+<div class="wishlist-container">
+
+  <h2 class="wishlist-title">❤️ My Wishlist</h2>
+
+  <!-- Empty Wishlist -->
+  <div *ngIf="wishlistItems.length === 0" class="empty-wishlist">
+    <p>😕 Your wishlist is empty!</p>
+    <button class="btn-shop" (click)="goToProducts()">
+      Browse Products
+    </button>
+  </div>
+
+  <!-- Wishlist Grid -->
+  <div class="wishlist-grid" *ngIf="wishlistItems.length > 0">
+    <div class="wishlist-card" *ngFor="let product of wishlistItems">
+
+      <!-- Remove Button -->
+      <button class="remove-btn" (click)="removeFromWishlist(product.id!)">
+        ✕
+      </button>
+
+      <!-- Image -->
+      <div class="product-image-wrapper" (click)="goToProductDetail(product.id!)">
+        <img
+          [src]="product.image || 'https://via.placeholder.com/200x200'"
+          [alt]="product.name"
+          (error)="onImageError($event)"
+          class="product-image">
+      </div>
+
+      <!-- Info -->
+      <div class="product-info">
+        <h3 class="product-name" (click)="goToProductDetail(product.id!)">
+          {{ product.name }}
+        </h3>
+        <p class="product-price">₹{{ product.price | number }}</p>
+        <p class="product-desc">{{ product.description }}</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="product-actions">
+        <button class="btn-cart" (click)="moveToCart(product)">
+          🛒 Move to Cart
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

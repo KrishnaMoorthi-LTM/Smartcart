@@ -1,0 +1,91 @@
+<mat-toolbar style="background-color: #2874f0; color: white;">
+
+  <!-- Logo -->
+  <span routerLink="/" style="cursor:pointer; font-size:24px; font-weight:700;">
+    🛒 Smartcart
+  </span>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput()"
+        (keypress)="onSearchKeyPress($event)"
+        (blur)="hideSuggestions()"
+        placeholder="Search products..."
+        class="search-input">
+      <button class="search-btn" (click)="search()">🔍</button>
+
+      <!-- Suggestions Dropdown -->
+      <div class="suggestions-dropdown" *ngIf="showSuggestions">
+  <div
+    class="suggestion-item"
+    *ngFor="let product of suggestions"
+    (click)="selectSuggestion(product)">
+    {{ product.name }}
+  </div>
+</div>
+    </div>
+  </div>
+
+  <span style="flex:1;"></span>
+
+  <!-- Nav Links -->
+  <button mat-button routerLink="/" style="color:white;">Home</button>
+  <button mat-button routerLink="/products" style="color:white;">Products</button>
+
+  <!-- Cart Icon -->
+  <button mat-icon-button routerLink="/cart" style="color:white;">
+    <mat-icon
+      [matBadge]="cartCount"
+      matBadgeColor="warn"
+      [matBadgeHidden]="cartCount === 0">
+      shopping_cart
+    </mat-icon>
+  </button>
+  <!-- Wishlist Icon -->
+<button mat-button routerLink="/wishlist" style="color:white; font-size:20px;">
+  ❤️
+  <span *ngIf="wishlistCount > 0" class="wish-badge">{{ wishlistCount }}</span>
+</button>
+
+  <!-- If NOT logged in -->
+  <ng-container *ngIf="!isLoggedIn()">
+    <button mat-button routerLink="/login" style="color:white;">Login</button>
+    <button mat-button routerLink="/register" style="color:white;">Register</button>
+  </ng-container>
+
+  <!-- If logged in -->
+  <ng-container *ngIf="isLoggedIn()">
+
+    <!-- Admin link -->
+    <button mat-button routerLink="/admin" *ngIf="isAdminOrStaff()" style="color:white;">
+  {{ currentUser?.role === 'ADMIN' ? 'Admin' : 'Staff' }}
+</button>
+
+    <!-- User menu -->
+    <button mat-button [matMenuTriggerFor]="userMenu" style="color:white;">
+      <mat-icon>account_circle</mat-icon>
+      {{ currentUser?.username }}
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+  <button mat-menu-item routerLink="/orders">
+    <mat-icon>shopping_bag</mat-icon>
+    My Orders
+  </button>
+  <button mat-menu-item routerLink="/wishlist">
+    <mat-icon>favorite</mat-icon>
+    My Wishlist
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>
+
+  </ng-container>
+
+</mat-toolbar>

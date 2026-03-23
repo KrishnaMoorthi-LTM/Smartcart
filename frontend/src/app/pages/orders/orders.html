@@ -1,0 +1,80 @@
+<div class="orders-container">
+
+  <h2 class="orders-title">📦 My Orders</h2>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading orders...</p>
+  </div>
+
+  <!-- No Orders -->
+  <div *ngIf="!isLoading && orders.length === 0" class="empty-orders">
+    <p>😕 No orders found!</p>
+    <button class="btn-shop" (click)="goToProducts()">
+      Start Shopping
+    </button>
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="!isLoading && orders.length > 0">
+    <div class="order-card" *ngFor="let order of orders">
+
+      <!-- Order Header -->
+      <div class="order-header">
+        <div class="order-info">
+          <span class="order-id">Order #{{ order.id }}</span>
+          <span class="order-date">
+            📅 {{ order.orderDate | date: 'dd MMM yyyy, hh:mm a' }}
+          </span>
+        </div>
+        <div class="order-right">
+          <span class="order-status"
+            [class.placed]="order.status === 'PLACED'"
+            [class.cancelled]="order.status === 'CANCELLED'"
+            [class.delivered]="order.status === 'DELIVERED'"
+            [class.shipped]="order.status === 'SHIPPED'">
+            {{ order.status }}
+          </span>
+          <span class="order-total">₹{{ order.totalAmount | number }}</span>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="order-items">
+        <div class="order-item" *ngFor="let item of order.items">
+          <img
+            [src]="item.product.image || 'https://via.placeholder.com/60x60'"
+            [alt]="item.product.name"
+            (error)="onImageError($event)"
+            class="item-image">
+          <div class="item-info">
+            <p class="item-name">{{ item.product.name }}</p>
+            <p class="item-qty">Qty: {{ item.quantity }}</p>
+            <p class="item-price">₹{{ item.price | number }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Details -->
+      <div class="delivery-info">
+        <p>📍 {{ order.name }}, {{ order.address }}, {{ order.city }} - {{ order.pincode }}</p>
+        <p>📞 {{ order.phone }}</p>
+      </div>
+
+      <!-- Order Actions -->
+      <div class="order-actions">
+        <button
+          class="btn-cancel"
+          *ngIf="order.status === 'PLACED'"
+          (click)="cancelOrder(order.id)">
+          ❌ Cancel Order
+        </button>
+        <span *ngIf="order.status === 'CANCELLED'" class="cancelled-text">
+          Order Cancelled
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+</div>

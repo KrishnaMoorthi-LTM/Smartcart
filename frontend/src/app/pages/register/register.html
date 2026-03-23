@@ -1,0 +1,76 @@
+<div class="register-container">
+
+  <div class="register-card">
+
+    <!-- Left Panel -->
+    <div class="register-left">
+      <h1>🛒 Smartcart</h1>
+      <p>Create an account to get access to your orders, wishlist and recommendations</p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="register-right">
+
+      <h2>Register</h2>
+
+      <!-- Error Message -->
+      <div class="error-msg" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label>Username</label>
+        <input
+          type="text"
+          [(ngModel)]="username"
+          placeholder="Enter your username"
+          class="form-input">
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label>Password</label>
+        <div class="password-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            class="form-input">
+          <span
+            class="toggle-password"
+            (click)="showPassword = !showPassword">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="confirmPassword"
+          placeholder="Confirm your password"
+          class="form-input">
+      </div>
+
+      <!-- Register Button -->
+      <button
+        class="btn-register"
+        (click)="register()"
+        [disabled]="isLoading">
+        {{ isLoading ? 'Registering...' : 'Register' }}
+      </button>
+
+      <!-- Login Link -->
+      <p class="login-link">
+        Already have an account?
+        <a routerLink="/login">Login here</a>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
